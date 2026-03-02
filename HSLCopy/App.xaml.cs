@@ -1,4 +1,5 @@
-﻿using HSLCopy.Views;
+﻿using HSLCopy.Usc;
+using HSLCopy.Views;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
@@ -71,6 +72,9 @@ namespace HSLCopy
             // 特殊处理：ShellView 作为主壳通常还是单例比较好
             //services.AddSingleton<ShellView>();
 
+            //注册Usc
+            services.AddSingleton<TcpIpControl>();
+            services.AddSingleton<SerialControl>();
             return services.BuildServiceProvider();
         }
 

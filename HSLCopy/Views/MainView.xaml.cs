@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
-using HSLUILearnDome.ViewModels;
+using HSLCopy.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ namespace HSLCopy.Views
             Page.Content = App.Current.Services.GetService<IndexView>();
 
             // 注册接收字符串消息
-            WeakReferenceMessenger.Default.Register<string>(this, (sender, viewName) =>
+            WeakReferenceMessenger.Default.Register<string, string>(this, "MainPageChangeToken", (sender, viewName) =>
             {
                 // 直接从 DI 容器中根据类名获取实例（前提是你在 App.xaml.cs 注册了这些 View）
                 // 这里的逻辑：HSLCopy.Views.S71200View

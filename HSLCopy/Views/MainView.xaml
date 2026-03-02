@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HSLCopy.Views"
         mc:Ignorable="d"
         Title="MainWindow"
-        xmlns:vm="clr-namespace:HSLUILearnDome.ViewModels" 
+        xmlns:vm="clr-namespace:HSLCopy.ViewModels" 
         d:DataContext="{d:DesignInstance vm:MainViewModel}" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:hc="https://handyorg.github.io/handycontrol"

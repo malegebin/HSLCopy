@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSLUILearnDome.ViewModels
+namespace HSLCopy.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
@@ -17,10 +17,11 @@ namespace HSLUILearnDome.ViewModels
         /// </summary>
         /// <param name="menu"></param>
 
+        //tag 是传进来的参数Tag=""的值
         [RelayCommand]
         void Navigation(string tag)
         {
-            WeakReferenceMessenger.Default.Send(tag);
+            WeakReferenceMessenger.Default.Send<string, string>(tag, "MainPageChangeToken");
         }
 
     }
