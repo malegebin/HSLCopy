@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using HSLCopy.Models;
 using HSLCopy.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,6 +24,8 @@ namespace HSLCopy.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         public MainWindow()
         {
             InitializeComponent();

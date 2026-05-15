@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="HSLCopy.Views.StepsRunningView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HSLCopy.Views"
+             mc:Ignorable="d"     
+             xmlns:vm="clr-namespace:HSLCopy.ViewModels" 
+             d:DataContext="{d:DesignInstance vm:StepsRunningViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <Style x:Key="ModernContextMenuStyle" TargetType="ContextMenu">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="White" CornerRadius="6" BorderBrush="#E0E0E0" BorderThickness="1" SnapsToDevicePixels="True" Padding="4">
+                            <ItemsPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <DataGrid x:Name="ProgramDataGrid"
+              AutoGenerateColumns="False"
+              Background="White"
+              BorderThickness="0"
+              CanUserAddRows="False"
+              CanUserSortColumns="False"
+              ItemsSource="{Binding RunProgram.StepCollection}"
+              SelectionMode="Extended"
+              SelectionUnit="FullRow"
+              SelectedItem="{Binding SelectedItem}"
+              SelectedIndex="{Binding SelectedIndex}"
+              HeadersVisibility="Column"
+              RowHeaderWidth="0"
+              GridLinesVisibility="None" Margin="2,0,-2,0">
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+                <i:InvokeCommandAction Command="{Binding ProgramDataGridDoubleClickCommand}" 
+                                       CommandParameter="{Binding SelectedItem, ElementName=ProgramDataGrid}"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="PreviewKeyDown">
+                <i:InvokeCommandAction Command="{Binding StepManagerKeyDownCommand}" 
+                                       PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
+        <DataGrid.ColumnHeaderStyle>
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="#FAFAFA"/>
+                <Setter Property="Foreground" Value="#666666"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Padding" Value="12,10"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BorderBrush" Value="#EEEEEE"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            </Style>
+        </DataGrid.ColumnHeaderStyle>
+
+        <DataGrid.CellStyle>
+            <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="12,5"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="#333333"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="DataGridCell">
+                            <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#F5F5F5"/>
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#E0F2FE"/>
+                        <Setter Property="Foreground" Value="#0C4A6E"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.CellStyle>
+
+        <DataGrid.Columns>
+            <DataGridCheckBoxColumn Width="50" Binding="{Binding IsUsed, UpdateSourceTrigger=PropertyChanged}" Header="启用" />
+            <DataGridTextColumn Binding="{Binding Index}" Header="序号" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Header="名称" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding StepType}" Header="类型" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding Method.FullName}" Header="指令类型" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding Method.Name}" Header="指令" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding OKExpression}" Header="合格条件" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding RunTime}" Header="耗时(ms)" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding Result}" Header="结果" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding Description}" Header="备注" />
+        </DataGrid.Columns>
+
+        <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow">
+                <Setter Property="Background" Value="White" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Result}" Value="0">
+                        <Setter Property="Background" Value="#EFF6FF" />
+                        <Setter Property="Foreground" Value="#1D4ED8" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Result}" Value="1">
+                        <Setter Property="Background" Value="#F0FDF4" />
+                        <Setter Property="Foreground" Value="#15803D" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Result}" Value="2">
+                        <Setter Property="Background" Value="#FEF2F2" />
+                        <Setter Property="Foreground" Value="#B91C1C" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Result}" Value="3">
+                        <Setter Property="Background" Value="#FFFBEB" />
+                        <Setter Property="Foreground" Value="#B45309" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.RowStyle>
+
+        <DataGrid.ContextMenu>
+            <ContextMenu Style="{StaticResource ModernContextMenuStyle}">
+                <MenuItem Header="编辑" 
+                          Command="{Binding DataContext.StepEditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                          CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                <MenuItem Header="复制" 
+                          Command="{Binding DataContext.StepCopyCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                <MenuItem Header="粘贴" 
+                          Command="{Binding DataContext.StepPasteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                <Separator Margin="4,2"/>
+                <MenuItem Header="删除" 
+                          Foreground="#DC2626"
+                          Command="{Binding DataContext.StepDeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+            </ContextMenu>
+        </DataGrid.ContextMenu>
+    </DataGrid>
+</UserControl>

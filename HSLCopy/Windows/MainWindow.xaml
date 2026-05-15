@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:HSLCopy.Views"
         mc:Ignorable="d"
         Title="MainWindow"
-        xmlns:vm="clr-namespace:HSLCopy.ViewModels" 
-        d:DataContext="{d:DesignInstance vm:MainViewModel}" 
+        xmlns:vm="clr-namespace:HSLCopy.ViewModels"     
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         Height="750" Width="1200">
@@ -19,9 +18,11 @@
         <Border Grid.Row="0" BorderThickness="1" BorderBrush="CornflowerBlue" Background="#506483">
             <StackPanel Orientation="Horizontal">
                 <Menu Style="{x:Null}" Margin="15,2,15,0" Background="Transparent">
-                    <MenuItem Header="语言" Foreground="White" FontSize="13">
-                        <MenuItem Header="English" Foreground="Black" />
-                        <MenuItem Header="中文" Foreground="Black" />
+                    <MenuItem Header="切换界面" Foreground="White" FontSize="13">
+                        <MenuItem Header="编辑子程序界面" Command="{Binding NavigationCommand}"  
+                                  CommandParameter
+                                  ="ProductEditView" />
+                        <MenuItem Header="运行界面" Foreground="Black" />
                     </MenuItem>
                 </Menu>
                 <Menu Style="{x:Null}" Margin="15,2,15,0" Background="Transparent">
@@ -51,41 +52,7 @@
             </StackPanel>
         </Border>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.13*"/>
-                <ColumnDefinition Width="0.9*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Border Margin="1" BorderThickness="1" BorderBrush="CornflowerBlue" Background="#506483">
-                    <TextBlock Text="设备列表" FontSize="14" Foreground="White"/>
-                </Border>
-                <TreeView Style="{x:Null}" Name="DeviceTreeViewEvent" >
-                    <TreeViewItem Style="{x:Null}" Margin="0,2,0,2" Header="Siemens Plc[西门子]" IsSelected="True">
-                        <TreeViewItem Style="{x:Null}" Tag="S71200View"  Header="S7-S1200}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Selected">
-                                    <i:InvokeCommandAction Command=
-                                    "{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext.NavigationCommand}" 
-                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=Tag}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TreeViewItem>
-                        <TreeViewItem Style="{x:Null}"  Header="S7-S1500">
-                        </TreeViewItem>
-                    </TreeViewItem>
-
-                    <TreeViewItem Style="{x:Null}" Margin="0,2,0,2" Header="ModBus" IsSelected="True">
-                        <TreeViewItem Style="{x:Null}"  Header="Modbus Rtu">
-                        </TreeViewItem>
-                        <TreeViewItem Style="{x:Null}"  Header="ModBus Tcp">
-                        </TreeViewItem>
-                    </TreeViewItem>
-                </TreeView>
-
-            </StackPanel>
-
-
-            <Border Grid.Column="1" BorderThickness="1" BorderBrush="CornflowerBlue" Background="AliceBlue">
+            <Border BorderThickness="1" BorderBrush="CornflowerBlue" Background="AliceBlue">
                 <ContentControl x:Name="Page" HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"/>
             </Border>

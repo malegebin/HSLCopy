@@ -1,0 +1,149 @@
+﻿<UserControl x:Class="HSLCopy.Views.ProductEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HSLCopy.Views" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:HSLCopy.ViewModels" 
+             xmlns:vs="clr-namespace:HSLCopy.Views"
+             d:DataContext="{d:DesignInstance vm:MainViewModel}" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="#1E1E1E">
+    <!-- 整体最深色背景，奠定 IDE 基调 -->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- 左侧指令区：深色侧边栏 -->
+            <ColumnDefinition Width="220" MinWidth="150"/>
+            <!-- 透明分割条 -->
+            <ColumnDefinition Width="4"/>
+            <!-- 右侧主工作区 -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ========================================== -->
+        <!-- 左侧：指令树 (深色侧边栏)                 -->
+        <!-- ========================================== -->
+        <Border Grid.Column="0" Background="#252526">
+            <!-- 顶部加个标题区，模仿 VS Code 的资源管理器 -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                           Text="  ⛓ 指令树" 
+                           Foreground="#CCCCCC" 
+                           FontWeight="SemiBold" 
+                           FontSize="13"
+                           VerticalAlignment="Center"
+                           Background="#333333"/>
+
+                <!-- 这里放入你的指令树，确保指令树内部的背景也是深色 -->
+                <vs:CommandView Grid.Row="1" Margin="0"/>
+            </Grid>
+        </Border>
+
+        <!-- 现代化 GridSplitter：默认完全隐形，鼠标悬停才出现一条细线 -->
+        <GridSplitter Grid.Column="1" 
+                      Width="4" 
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Stretch" 
+                      Background="Transparent"
+                      ResizeDirection="Columns">
+            <GridSplitter.Style>
+                <Style TargetType="GridSplitter">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#007ACC"/>
+                            <!-- VS Code 经典悬停蓝 -->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </GridSplitter.Style>
+        </GridSplitter>
+
+        <!-- ========================================== -->
+        <!-- 右侧：主工作区 (纯白底)                    -->
+        <!-- ========================================== -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <!-- 1. 极简顶部工具栏 -->
+                <RowDefinition Height="Auto"/>
+                <!-- 2. 中间内容 (表格) -->
+                <RowDefinition Height="*"/>
+                <!-- 3. 透明水平分割条 -->
+                <RowDefinition Height="4"/>
+                <!-- 4. 底部日志终端 -->
+                <RowDefinition Height="160" MinHeight="100"/>
+            </Grid.RowDefinitions>
+
+            <!-- 顶部工具栏：极度弱化，融入白色背景 -->
+            <Border Grid.Row="0" 
+                    Background="#F8F8F8" 
+                    BorderThickness="0,0,0,1" 
+                    BorderBrush="#E8E8E8">
+                <vs:ToolBarView />
+            </Border>
+
+            <!-- 中间表格区：不画边框，直接铺满白色空间 -->
+            <Border Grid.Row="1" Background="White">
+                <vs:StepsRunningView />
+            </Border>
+
+            <!-- 水平拖拽条：控制表格和日志的比例 -->
+            <GridSplitter Grid.Row="2" 
+                          Height="4" 
+                          HorizontalAlignment="Stretch" 
+                          Background="Transparent"
+                          ResizeDirection="Rows">
+                <GridSplitter.Style>
+                    <Style TargetType="GridSplitter">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#007ACC"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </GridSplitter.Style>
+            </GridSplitter>
+
+            <!-- ========================================== -->
+            <!-- 底部：系统运行日志 (伪装成代码终端)       -->
+            <!-- ========================================== -->
+            <Border Grid.Row="3" Background="#1E1E1E">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 终端标题栏 -->
+                    <Border Grid.Row="0" Background="#252526" BorderThickness="0,1,0,0" BorderBrush="#007ACC">
+                        <TextBlock Text="  ▸ 系统运行日志" 
+                                   Foreground="#CCCCCC" 
+                                   FontSize="12" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- 终端内容区 (如果你在 StepsRunningViewModel 里有日志字符串，绑定到这里) -->
+                    <TextBox Grid.Row="1" 
+                             IsReadOnly="True" 
+                             TextWrapping="Wrap" 
+                             VerticalScrollBarVisibility="Auto" 
+                             BorderThickness="0" 
+                             Background="Transparent"
+                             Foreground="#DCDCDC"
+                             FontFamily="Consolas"
+                             FontSize="12"
+                             Padding="10,5"
+                             Text="[#INFO] 等待程序启动...&#x0a;[SYSTEM] 子程序模块加载完毕。"
+                             CaretBrush="#007ACC"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
